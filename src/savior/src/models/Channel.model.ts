@@ -1,6 +1,15 @@
-import Base from "./Base.model";
+import Base from './Base.model';
 
-type Video = {
+export type Video = {
+  id: string;
+  title: string;
+  description: string;
+  publishDate: number;
+  thumbnail: string;
+  author: {
+    name: string;
+    id: string;
+  };
 };
 
 type Channel = Base & {

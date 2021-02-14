@@ -3,10 +3,19 @@
 // import getUsers from './get-users';
 // import getChannelToUserMap from './getChannelToUserMap';
 
-const apiHost = process.env.API_HOST || 'localhost';
-const apiPort = process.env.API_PORT || 3000;
+import updateChannels from './jobs/update-channels';
+
+// const apiHost = process.env.API_HOST || 'localhost';
+// const apiPort = process.env.API_PORT || 3000;
 
 // const client = new MongoClient(`mongodb://${dbHost}/${dbName}`);
+
+switch (process.argv[process.argv.length - 1]) {
+  case 'update-channels':
+    updateChannels();
+
+    break;
+}
 
 // client
 //   .connect()
