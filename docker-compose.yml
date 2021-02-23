@@ -8,3 +8,17 @@ services:
       - PORT=3000
     ports:
       - '3000:3000'
+    networks:
+      - youtuber
+  db:
+    image: mongo
+    ports:
+      - '27017:27017'
+    networks:
+      - youtuber
+    volumes:
+      - /data/super-potato/db:/data/db
+
+networks:
+  youtuber:
+    driver: bridge

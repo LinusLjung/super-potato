@@ -1,0 +1,23 @@
+{
+  "name": "savior",
+  "version": "0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./build/savior/src/index.js",
+    "build": "tsc",
+    "update-channels": "npm start update-channels",
+    "update-channels:inspect": "node inspect ./build/savior/src/index.js update-channels",
+    "docker:build": "docker build -t linusljung/savior -f ./Dockerfile ../..",
+    "docker:update-channels": "docker run --network=super-potato_youtuber --env API_HOST=youtuber --env DB_HOST=db linusljung/savior update-channels"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/mongodb": "^3.6.6",
+    "@types/node-fetch": "^2.5.8",
+    "mongodb": "^3.6.4",
+    "node-fetch": "^2.6.1",
+    "typescript": "^4.1.5"
+  }
+}
