@@ -7,9 +7,10 @@ ENV PORT=3000
 
 EXPOSE ${PORT}
 
-COPY . ${PROJECT_DIR}
+COPY ./tsconfig.json ${PROJECT_DIR}/tsconfig.json
+COPY ./src/youtuber ${PROJECT_DIR}/src/youtuber
 
-WORKDIR ${PROJECT_DIR}
+WORKDIR ${PROJECT_DIR}/src/youtuber
 
 RUN npm install
 RUN npm run build

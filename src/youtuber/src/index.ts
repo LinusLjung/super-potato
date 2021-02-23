@@ -2,6 +2,7 @@ import express from 'express';
 import fetch from 'node-fetch';
 import { parseStringPromise } from 'xml2js';
 import { StatusCodes } from 'http-status-codes';
+import Endpoints from './constants/Endpoints';
 import HttpError from './HttpError';
 import Channel from './data-types/Channel.type';
 import asArray from './util/asArray';
@@ -9,14 +10,15 @@ import asArray from './util/asArray';
 const app = express();
 
 const CHANNEL_URL = 'https://www.youtube.com/feeds/videos.xml';
-const CHANNEL_KEY = 'channel_id';
 
-app.get('/channel', (req, res) => {
-  if (!req.query[CHANNEL_KEY]) {
-    res.status(StatusCodes.BAD_REQUEST).send(`Missing ${CHANNEL_KEY} param`);
+app.get(`/${Endpoints.channel.name}`, (req, res) => {
+  const channelIdParam = Endpoints.channel.params.channelId;
+
+  if (!req.query[channelIdParam]) {
+    res.status(StatusCodes.BAD_REQUEST).send(`Missing ${channelIdParam} param`);
   }
 
-  fetch(`${CHANNEL_URL}?${CHANNEL_KEY}=${req.query[CHANNEL_KEY]}`)
+  fetch(`${CHANNEL_URL}?${channelIdParam}=${req.query[channelIdParam]}`)
     .then((response) => {
       if (response.status === StatusCodes.NOT_FOUND) {
         throw new HttpError(StatusCodes.NOT_FOUND);
@@ -63,6 +65,8 @@ app.get('/channel', (req, res) => {
 
         xml.feed.links = asArray(xml.feed.links);
 
+        xml.feed.entries = xml.feed.entries.reverse();
+
         return xml;
       }),
     )
@@ -76,4 +80,4 @@ app.get('/channel', (req, res) => {
     });
 });
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
