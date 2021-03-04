@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf ./build && tsc",
     "start": "pm2-runtime build/youtuber/src/index.js",
-    "docker:build": "docker build -t linusljung/youtuber -f ./Dockerfile ../.."
+    "docker:build": "docker build -t linusljung/youtuber -f ./Dockerfile ../..",
+    "docker:bash": "docker run --network=super-potato_youtuber -it --entrypoint=/bin/bash linusljung/youtuber"
   },
   "author": "",
   "license": "ISC",
