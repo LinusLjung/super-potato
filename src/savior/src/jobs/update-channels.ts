@@ -1,9 +1,9 @@
 import { Db } from 'mongodb';
 import fetch from 'node-fetch';
+import Endpoints from '../../../shared/youtuber/constants/Endpoints';
+import Channel from '../../../shared/youtuber/data-types/Channel.type';
 import { getDistinctSupscriptionIDs } from '../database/users';
 import useDb from '../database/use-db';
-import Endpoints from '../../../youtuber/src/constants/Endpoints';
-import Channel from '../../../youtuber/src/data-types/Channel.type';
 import { saveChannel } from '../database/channels';
 
 const API_PROTOCOL = 'http';

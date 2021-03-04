@@ -1,5 +1,5 @@
 import { Db, UpdateWriteOpResult } from 'mongodb';
-import YoutuberChannel, { Entry } from '../../../youtuber/src/data-types/Channel.type';
+import YoutuberChannel, { Entry } from '../../../shared/youtuber/data-types/Channel.type';
 import { Video } from '../models/Channel.model';
 
 function getCollection(db: Db) {

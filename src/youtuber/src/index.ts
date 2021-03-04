@@ -2,9 +2,9 @@ import express from 'express';
 import fetch from 'node-fetch';
 import { parseStringPromise } from 'xml2js';
 import { StatusCodes } from 'http-status-codes';
-import Endpoints from './constants/Endpoints';
+import Endpoints from '../../shared/youtuber/constants/Endpoints';
+import Channel from '../../shared/youtuber/data-types/Channel.type';
 import HttpError from './HttpError';
-import Channel from './data-types/Channel.type';
 import asArray from './util/asArray';
 
 const app = express();
