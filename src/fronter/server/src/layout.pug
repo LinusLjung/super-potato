@@ -1,0 +1,15 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title= title
+  body
+    if isSignedIn
+      p Signed in
+    else
+      p Signed out
+
+    p
+      a.sign-in-anchor(href='/sign-in') Sign in
+
+    p= auth
