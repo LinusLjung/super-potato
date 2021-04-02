@@ -18,7 +18,27 @@ services:
       - youtuber
     volumes:
       - /data/super-potato/db:/data/db
+  fronter-server:
+    build:
+      context: ./
+      dockerfile: ./src/fronter/server/Dockerfile
+    environment:
+      - SESSION_HOST=session
+    env_file:
+      - ./src/fronter/server/.env
+    ports:
+      - '3001:3001'
+    networks:
+      - session
+  session:
+    image: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - session
 
 networks:
   youtuber:
+    driver: bridge
+  session:
     driver: bridge
