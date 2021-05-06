@@ -30,6 +30,8 @@ services:
       - '3001:3001'
     networks:
       - session
+    depends_on:
+      - session
   session:
     image: redis
     ports:
