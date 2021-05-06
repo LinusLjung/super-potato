@@ -1,15 +1,13 @@
-import connectRedis from 'connect-redis';
 import csurf from 'csurf';
 import express from 'express';
-import session from 'express-session';
 import { StatusCodes } from 'http-status-codes';
 import fetch from 'node-fetch';
 import path from 'path';
-import redis from 'redis';
+import superSession from '../../../packages/super-session/build';
 import getAuthEndpointUrl from './auth/google/get-auth-endpoint-url';
 import { getTokenEndpointBody, getTokenEndpointUrl } from './auth/google/token-endpoint';
 import validateJWT from './auth/google/validate-jwt';
-import { PORT, SESSION_HOST, SESSION_SECRET } from './consts';
+import { SESSION_HOST, SESSION_SECRET } from './consts';
 import validateCsrfSecret from './middlewares/validateCsrfSecret';
 import { AUTH_GOOGLE, ROOT, SIGN_IN } from './routes';
 
@@ -20,22 +18,7 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', SRC_FOLDER);
 
-const RedisStore = connectRedis(session);
-const redisClient = redis.createClient({
-  host: SESSION_HOST,
-  retry_strategy: (options) => {
-    return Math.min(options.attempt, 10) * 1000;
-  },
-});
-
-app.use(
-  session({
-    store: new RedisStore({ client: redisClient }),
-    secret: SESSION_SECRET!,
-    resave: false,
-    saveUninitialized: false,
-  }),
-);
+app.use(superSession(SESSION_HOST!, SESSION_SECRET!)());
 
 app.use(csurf());
 

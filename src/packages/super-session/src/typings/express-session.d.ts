@@ -1,3 +1,4 @@
+/// <reference types="express-session" />
 declare global {
   module 'express-session' {
     interface SessionData {
