@@ -3,11 +3,11 @@ import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import fetch from 'node-fetch';
 import path from 'path';
+import getAuthEndpointUrl from '../../../packages/google-auth/build/get-auth-endpoint-url';
+import { getTokenEndpointBody, getTokenEndpointUrl } from '../../../packages/google-auth/build/token-endpoint';
+import validateJWT from '../../../packages/google-auth/build/validate-jwt';
 import superSession from '../../../packages/super-session/build';
-import getAuthEndpointUrl from './auth/google/get-auth-endpoint-url';
-import { getTokenEndpointBody, getTokenEndpointUrl } from './auth/google/token-endpoint';
-import validateJWT from './auth/google/validate-jwt';
-import { SESSION_HOST, SESSION_SECRET } from './consts';
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST, PORT, SESSION_HOST, SESSION_SECRET } from './consts';
 import validateCsrfSecret from './middlewares/validateCsrfSecret';
 import { AUTH_GOOGLE, ROOT, SIGN_IN } from './routes';
 
@@ -24,7 +24,7 @@ app.use(csurf());
 
 app.get(ROOT, (req, res) => {
   if (req.session.auth) {
-    validateJWT(req.session.auth.id_token).then((result) => console.log('result', result));
+    validateJWT(req.session.auth.id_token, GOOGLE_CLIENT_ID!).then((result) => console.log('result', result));
   }
 
   res.render('layout.pug', {
@@ -38,7 +38,7 @@ app.get(SIGN_IN, (req, res) => {
     res.status(StatusCodes.FORBIDDEN).send('Missing CSRF secret');
   }
 
-  getAuthEndpointUrl(req.session.csrfSecret!).then((url) => {
+  getAuthEndpointUrl(req.session.csrfSecret!, GOOGLE_CLIENT_ID!, `${HOST}:${PORT}${AUTH_GOOGLE}`).then((url) => {
     res.redirect(StatusCodes.MOVED_TEMPORARILY, url);
   });
 });
@@ -47,7 +47,14 @@ app.get(AUTH_GOOGLE, validateCsrfSecret, (req, res) => {
   getTokenEndpointUrl().then((url) => {
     fetch(url, {
       method: 'POST',
-      body: JSON.stringify(getTokenEndpointBody(req.query.code as string)),
+      body: JSON.stringify(
+        getTokenEndpointBody(
+          req.query.code as string,
+          GOOGLE_CLIENT_ID!,
+          GOOGLE_CLIENT_SECRET!,
+          `${HOST}:${PORT}${AUTH_GOOGLE}`,
+        ),
+      ),
     })
       .then((response) => response.json())
       .then((response) => {
