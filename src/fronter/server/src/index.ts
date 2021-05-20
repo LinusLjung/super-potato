@@ -23,14 +23,20 @@ app.use(superSession(SESSION_HOST!, SESSION_SECRET!)());
 app.use(csurf());
 
 app.get(ROOT, (req, res) => {
-  if (req.session.auth) {
-    validateJWT(req.session.auth.id_token, GOOGLE_CLIENT_ID!).then((result) => console.log('result', result));
-  }
+  new Promise<boolean>((resolve) => {
+    if (req.session.auth) {
+      return validateJWT(req.session.auth.id_token, GOOGLE_CLIENT_ID!).then(({ isAuthorized }) =>
+        resolve(isAuthorized),
+      );
+    }
 
-  res.render('layout.pug', {
-    isSignedIn: !!req.session.auth,
-    auth: JSON.stringify(req.session.auth || {}),
-  });
+    resolve(false);
+  }).then((isAuthorized) =>
+    res.render('layout.pug', {
+      isSignedIn: isAuthorized,
+      auth: JSON.stringify(req.session.auth || {}),
+    }),
+  );
 });
 
 app.get(SIGN_IN, (req, res) => {
