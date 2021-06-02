@@ -1,12 +1,10 @@
+import { getAuthEndpointUrl, getTokenEndpointBody, getTokenEndpointUrl, validateJWT } from '@linusljung/google-auth';
+import superSession from '@linusljung/super-session';
 import csurf from 'csurf';
 import express from 'express';
 import { StatusCodes } from 'http-status-codes';
 import fetch from 'node-fetch';
 import path from 'path';
-import getAuthEndpointUrl from '../../../packages/google-auth/dist/get-auth-endpoint-url';
-import { getTokenEndpointBody, getTokenEndpointUrl } from '../../../packages/google-auth/dist/token-endpoint';
-import validateJWT from '../../../packages/google-auth/dist/validate-jwt';
-import superSession from '../../../packages/super-session/dist';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST, PORT, SESSION_HOST, SESSION_SECRET } from './consts';
 import validateCsrfSecret from './middlewares/validateCsrfSecret';
 import { AUTH_GOOGLE, ROOT, SIGN_IN } from './routes';

@@ -1,4 +1,4 @@
-/// <reference path="./typings/express-session.d.ts" />
+/// <reference path="../typings/express-session.d.ts" />
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 import redis from 'redis';
