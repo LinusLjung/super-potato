@@ -1,7 +1,9 @@
 {
-  "name": "validate-jwt",
+  "name": "@linusljung/google-auth",
   "version": "1.0.0",
   "description": "",
+  "repository": "git://github.com/LinusLjung/super-potato.git",
+  "typings": "./dist",
   "main": "index.js",
   "scripts": {
     "build": "rimraf ./dist && tsc"

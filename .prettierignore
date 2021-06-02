@@ -3,3 +3,5 @@ build
 package-lock.json
 Dockerfile
 *.pug
+.npmrc
+.npmignore
