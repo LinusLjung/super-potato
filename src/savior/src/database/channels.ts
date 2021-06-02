@@ -1,4 +1,4 @@
-import { Db, UpdateWriteOpResult } from 'mongodb';
+import { Db, UpdateWriteOpResult } from '@linusljung/use-db';
 import YoutuberChannel, { Entry } from '../../../shared/youtuber/data-types/Channel.type';
 import { Video } from '../models/Channel.model';
 

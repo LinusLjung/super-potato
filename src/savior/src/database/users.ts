@@ -1,4 +1,4 @@
-import { Db } from 'mongodb';
+import { Db } from '@linusljung/use-db';
 
 function getCollection(db: Db) {
   return db.collection('users');

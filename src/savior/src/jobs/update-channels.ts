@@ -1,14 +1,15 @@
-import { Db } from 'mongodb';
+import { Db, useDb } from '@linusljung/use-db';
 import fetch from 'node-fetch';
 import Endpoints from '../../../shared/youtuber/constants/Endpoints';
 import Channel from '../../../shared/youtuber/data-types/Channel.type';
-import { getDistinctSupscriptionIDs } from '../database/users';
-import useDb from '../database/use-db';
 import { saveChannel } from '../database/channels';
+import { getDistinctSupscriptionIDs } from '../database/users';
 
 const API_PROTOCOL = 'http';
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 3000;
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_NAME = process.env.DB_NAME || 'super-potato';
 
 function getApiUrl(endpoint: string) {
   return `${API_PROTOCOL}://${API_HOST}:${API_PORT}/${endpoint}`;
@@ -27,13 +28,13 @@ function fetchChannel(id: string): Promise<Channel> {
 function updateChannels(): Promise<void> {
   return new Promise((resolve, reject) => {
     try {
-      useDb((error, db) => {
+      useDb(DB_HOST, DB_NAME, (error, db) => {
         return new Promise((dbResolve, dbReject) => {
           if (error) {
             return dbReject(error);
           }
 
-          db = db as Db;
+          db = db!;
 
           getDistinctSupscriptionIDs(db)
             .then((subscriptionIDs) => {
