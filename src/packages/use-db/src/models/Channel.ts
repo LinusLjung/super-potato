@@ -1,4 +1,4 @@
-import Base from './Base.model';
+import Base from './Base';
 
 export type Video = {
   id: string;

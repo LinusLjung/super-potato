@@ -1,5 +1,8 @@
 import { Db, MongoClient, UpdateWriteOpResult } from 'mongodb';
 
+export * from './consts';
+export * from './models';
+
 function useDb(host: string, dbName: string, callback: (error: Error | null, db: Db | null) => Promise<void>): void {
   const client = new MongoClient(`mongodb://${host}/${dbName}`);
 
