@@ -28,7 +28,7 @@ services:
       - SESSION_HOST=session
       - DB_HOST=db
     env_file:
-      - ./src/fronter/server/.env
+      - ./.env
     ports:
       - '3001:3001'
     networks:
