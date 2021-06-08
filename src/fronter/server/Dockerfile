@@ -2,6 +2,8 @@ FROM node:latest
 
 LABEL maintainer="Linus Ljung <linus.ljung@outlook.com>"
 
+ARG GITHUB_PACKAGE_TOKEN
+
 ENV PROJECT_DIR=/var/www
 ENV PORT=3001
 

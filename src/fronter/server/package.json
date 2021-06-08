@@ -9,7 +9,7 @@
     "start": "node -r dotenv/config ./build",
     "inspect": "node -r dotenv/config inspect ./build",
     "build": "rimraf ./build && tsc",
-    "docker:build": "docker build -t linusljung/fronter/server -f ./Dockerfile ../../..",
+    "docker:build": "docker build --build-arg GITHUB_PACKAGE_TOKEN=${SUPER_POTATO_PACKAGE_TOKEN} -t linusljung/fronter/server -f ./Dockerfile ../../..",
     "docker:bash": "docker run -it --entrypoint=/bin/bash linusljung/fronter/server"
   },
   "author": "",
