@@ -10,9 +10,9 @@
     "update-channels": "npm start update-channels",
     "update-channels:inspect": "node inspect ./build/savior/src/index.js update-channels",
     "docker:build": "docker build -t linusljung/savior -f ./Dockerfile ../..",
-    "docker:run": "docker run --network=super-potato_youtuber --env API_HOST=youtuber --env DB_HOST=db linusljung/savior",
+    "docker:run": "docker run --network super-potato_main --env API_HOST=youtuber --env DB_HOST=db linusljung/savior",
     "docker:update-channels": "npm run docker:run update-channels",
-    "docker:bash": "docker run --network=super-potato_youtuber -it --entrypoint=/bin/bash linusljung/savior"
+    "docker:bash": "docker run --network=super-potato_main -it --entrypoint=/bin/bash linusljung/savior"
   },
   "author": "",
   "license": "ISC",
