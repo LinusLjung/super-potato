@@ -26,6 +26,7 @@ services:
         GITHUB_PACKAGE_TOKEN: ${SUPER_POTATO_PACKAGE_TOKEN}
     environment:
       - SESSION_HOST=session
+      - DB_HOST=db
     env_file:
       - ./src/fronter/server/.env
     ports:
