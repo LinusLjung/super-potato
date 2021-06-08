@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node -r dotenv/config ./build",
-    "inspect": "node inspect ./build",
+    "inspect": "node -r dotenv/config inspect ./build",
     "build": "rimraf ./build && tsc",
     "docker:build": "docker build -t linusljung/fronter/server -f ./Dockerfile ../../..",
     "docker:bash": "docker run -it --entrypoint=/bin/bash linusljung/fronter/server"
@@ -17,6 +17,7 @@
   "dependencies": {
     "@linusljung/google-auth": "^1.0.0",
     "@linusljung/super-session": "^1.0.0",
+    "@linusljung/use-db": "^1.2.0",
     "csurf": "^1.11.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

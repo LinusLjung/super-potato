@@ -1,4 +1,9 @@
-import { getAuthEndpointUrl, getTokenEndpointBody, getTokenEndpointUrl, validateJWT } from '@linusljung/google-auth';
+import {
+  getAuthEndpointUrl,
+  getTokenEndpointBody,
+  getTokenEndpointUrl,
+  validateJWT,
+} from '@linusljung/google-auth/dist';
 import superSession from '@linusljung/super-session';
 import csurf from 'csurf';
 import express from 'express';
@@ -6,6 +11,7 @@ import { StatusCodes } from 'http-status-codes';
 import fetch from 'node-fetch';
 import path from 'path';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST, PORT, SESSION_HOST, SESSION_SECRET } from './consts';
+import { getOrCreate } from './database/user';
 import validateCsrfSecret from './middlewares/validateCsrfSecret';
 import { AUTH_GOOGLE, ROOT, SIGN_IN } from './routes';
 
@@ -62,8 +68,26 @@ app.get(AUTH_GOOGLE, validateCsrfSecret, (req, res) => {
     })
       .then((response) => response.json())
       .then((response) => {
+        return validateJWT(response.id_token, GOOGLE_CLIENT_ID!)
+          .then(({ result }) => {
+            if (!result) {
+              throw new Error('Validation of JWT failed');
+            }
+
+            if (!result.payload.email_verified as boolean) {
+              throw new Error('Email is not verified');
+            }
+
+            return getOrCreate(result.payload.sub!, result.payload.email as string);
+          })
+          .then(() => response);
+      })
+      .then((response) => {
         req.session.auth = response;
-        res.redirect(StatusCodes.MOVED_TEMPORARILY, '/');
+        res.redirect(StatusCodes.MOVED_TEMPORARILY, ROOT);
+      })
+      .catch(() => {
+        // TODO: 500
       });
   });
 });

@@ -1,9 +1,8 @@
-import { Db, UpdateWriteOpResult } from '@linusljung/use-db';
+import { COLLECTION_NAMES, Db, UpdateWriteOpResult, Video } from '@linusljung/use-db';
 import YoutuberChannel, { Entry } from '../../../shared/youtuber/data-types/Channel.type';
-import { Video } from '../models/Channel.model';
 
 function getCollection(db: Db) {
-  return db.collection('channels');
+  return db.collection(COLLECTION_NAMES.channels);
 }
 
 function youtuberVideoAdapter(videos: Entry[]): Video[] {

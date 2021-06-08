@@ -1,4 +1,9 @@
-import { Db, MongoClient, UpdateWriteOpResult } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
+
+export * from 'mongodb';
+export * from './consts';
+export * from './models';
+export { useDb };
 
 function useDb(host: string, dbName: string, callback: (error: Error | null, db: Db | null) => Promise<void>): void {
   const client = new MongoClient(`mongodb://${host}/${dbName}`);
@@ -18,5 +23,3 @@ function useDb(host: string, dbName: string, callback: (error: Error | null, db:
       client.close();
     });
 }
-
-export { useDb, Db, UpdateWriteOpResult };

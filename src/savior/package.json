@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linusljung/use-db": "^1.0.0",
+    "@linusljung/use-db": "^1.1.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
