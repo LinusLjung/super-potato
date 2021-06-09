@@ -40,6 +40,7 @@ export function getOrCreate(id: string, email: string) {
           }
 
           resolve(user);
+          useDbResolve();
         });
       });
     });
