@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.2",
   "info": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "title": "Subscriptions",
     "license": {
       "name": "MIT"
@@ -61,6 +61,42 @@
         "responses": {
           "200": {
             "description": "Successful post",
+            "content": {}
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./shared.json#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a subscription for the current user",
+        "operationId": "deleteSubscriptionForCurrentUser",
+        "tags": ["subscriptions"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful delete",
             "content": {}
           },
           "default": {

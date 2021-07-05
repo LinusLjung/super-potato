@@ -1,6 +1,6 @@
 import { RequestHandler, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { addSubscription, getSubscriptions as dbGetSubscriptions } from '../database/subscriptions';
+import { addSubscription, deleteSubscription, getSubscriptions as dbGetSubscriptions } from '../database/subscriptions';
 
 function errorHandler(res: Response) {
   res.status(500).send();
@@ -30,6 +30,28 @@ export const postSubscriptions: RequestHandler = (req, res) => {
   }
 
   addSubscription(req.authData!.result?.payload.sub!, body.url)
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch(() => errorHandler(res));
+};
+
+type DeleteReqBody = {
+  id: string;
+};
+
+export const deleteSubscriptions: RequestHandler = (req, res) => {
+  const body: DeleteReqBody = req.body;
+
+  if (!body) {
+    return res.status(StatusCodes.BAD_REQUEST).send('Missing request body');
+  }
+
+  if (!body.id) {
+    return res.status(StatusCodes.BAD_REQUEST).send("Missing field 'id'");
+  }
+
+  deleteSubscription(req.authData!.result?.payload.sub!, body.id)
     .then(() => {
       res.status(200).send();
     })

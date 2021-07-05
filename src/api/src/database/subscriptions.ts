@@ -49,3 +49,31 @@ export function addSubscription(id: string, subscription: string) {
     });
   });
 }
+
+export function deleteSubscription(userId: string, subscriptionId: string) {
+  return new Promise<void>((resolve, reject) => {
+    useDb(DB_HOST, DB_NAME, (error, db) => {
+      return new Promise((dbResolve) => {
+        if (error) {
+          throw error;
+        }
+
+        db!
+          .collection<User>(COLLECTION_NAMES.users)
+          .updateOne(
+            { id: userId },
+            {
+              $pull: {
+                subscriptions: { id: subscriptionId },
+              },
+            },
+          )
+          .then(() => {
+            resolve();
+            dbResolve();
+          })
+          .catch(() => reject());
+      });
+    });
+  });
+}
