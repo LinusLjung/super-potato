@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const swagger = require('swagger-cli');
 
-const docsFolder = path.resolve(__dirname, '../docs');
+const docsFolder = path.resolve(__dirname, '../spec');
 
 function isDir(file) {
   return new Promise((resolve) => {

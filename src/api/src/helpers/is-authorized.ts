@@ -3,6 +3,8 @@ import { AuthDataType } from '@linusljung/google-auth/dist/validate-jwt';
 import { Request } from 'express';
 import { GOOGLE_CLIENT_ID } from '../consts';
 
+export { AuthDataType };
+
 function isAuthorized(req: Request) {
   return new Promise<AuthDataType>((resolve) => {
     if (!req.session.auth?.id_token) {

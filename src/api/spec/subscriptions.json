@@ -60,14 +60,8 @@
         },
         "responses": {
           "200": {
-            "description": "The added subscription",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Subscription"
-                }
-              }
-            }
+            "description": "Successful post",
+            "content": {}
           },
           "default": {
             "description": "Unexpected error",

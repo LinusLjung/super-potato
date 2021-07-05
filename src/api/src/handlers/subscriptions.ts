@@ -1,18 +1,37 @@
-import { RequestHandler } from 'express';
+import { RequestHandler, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import getSubscriptions from '../database/get-subscriptions';
-import isAuthorized from '../helpers/is-authorized';
+import { addSubscription, getSubscriptions as dbGetSubscriptions } from '../database/subscriptions';
 
-const subscriptions: RequestHandler = function subscriptions(req, res) {
-  isAuthorized(req).then((auth) => {
-    if (!auth.isAuthorized) {
-      return res.status(StatusCodes.UNAUTHORIZED).send('Invalid JWT');
-    }
+function errorHandler(res: Response) {
+  res.status(500).send();
+}
 
-    getSubscriptions(auth.result?.payload.sub!).then((subscriptions) => {
+export const getSubscriptions: RequestHandler = (req, res) => {
+  dbGetSubscriptions(req.authData!.result?.payload.sub!)
+    .then((subscriptions) => {
       res.status(200).send(subscriptions);
-    });
-  });
+    })
+    .catch(() => errorHandler(res));
 };
 
-export default subscriptions;
+type PostReqBody = {
+  url: string;
+};
+
+export const postSubscriptions: RequestHandler = (req, res) => {
+  const body: PostReqBody = req.body;
+
+  if (!body) {
+    return res.status(StatusCodes.BAD_REQUEST).send('Missing request body');
+  }
+
+  if (!body.url) {
+    return res.status(StatusCodes.BAD_REQUEST).send("Missing field 'url'");
+  }
+
+  addSubscription(req.authData!.result?.payload.sub!, body.url)
+    .then(() => {
+      res.status(200).send();
+    })
+    .catch(() => errorHandler(res));
+};
