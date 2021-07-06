@@ -23,7 +23,7 @@ services:
       context: ./
       dockerfile: ./src/fronter/server/Dockerfile
       args:
-        GITHUB_PACKAGE_TOKEN: ${SUPER_POTATO_PACKAGE_TOKEN}
+        SUPER_POTATO_PACKAGE_TOKEN: ${SUPER_POTATO_PACKAGE_TOKEN}
     environment:
       - SESSION_HOST=session
       - DB_HOST=db
@@ -42,6 +42,24 @@ services:
       - '6379:6379'
     networks:
       - main
+  api:
+    build:
+      context: ./
+      dockerfile: ./src/api/Dockerfile
+      args:
+        SUPER_POTATO_PACKAGE_TOKEN: ${SUPER_POTATO_PACKAGE_TOKEN}
+    environment:
+      - SESSION_HOST=session
+      - DB_HOST=db
+    env_file:
+      - ./.env
+    ports:
+      - '3002:3002'
+    networks:
+      - main
+    depends_on:
+      - session
+      - db
 
 networks:
   main:

@@ -41,4 +41,6 @@ function validateJWT(token: string, clientId: string) {
   });
 }
 
+export { AuthDataType };
+
 export default validateJWT;

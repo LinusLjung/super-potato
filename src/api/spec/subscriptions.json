@@ -1,0 +1,132 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "version": "1.1.0",
+    "title": "Subscriptions",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "paths": {
+    "/subscriptions": {
+      "get": {
+        "summary": "Get all subscriptions for the current user",
+        "operationId": "getSubscriptionsForCurrentUser",
+        "tags": ["subscriptions"],
+        "responses": {
+          "200": {
+            "description": "A list of all subscriptions for a given user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Subscription"
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./shared.json#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new subscription for the current user",
+        "operationId": "addSubscriptionForCurrentUser",
+        "tags": ["subscriptions"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful post",
+            "content": {}
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./shared.json#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a subscription for the current user",
+        "operationId": "deleteSubscriptionForCurrentUser",
+        "tags": ["subscriptions"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful delete",
+            "content": {}
+          },
+          "default": {
+            "description": "Unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "./shared.json#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Subscription": {
+        "type": "object",
+        "required": ["id", "url"],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
