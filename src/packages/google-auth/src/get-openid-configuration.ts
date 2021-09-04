@@ -13,13 +13,13 @@ function getOpenIDConfiguration(): Promise<Config> {
     return Promise.resolve(_config);
   }
 
-  return new Promise((resolve) => {
-    resolve(
-      fetch('https://accounts.google.com/.well-known/openid-configuration')
-        .then((response) => response.json())
-        .then((response) => (_config = response)),
-    );
-  });
+  return Promise.resolve(
+    fetch('https://accounts.google.com/.well-known/openid-configuration')
+      .then((response) => response.json())
+      .then((response) => (_config = response)),
+  );
 }
+
+export { Config };
 
 export default getOpenIDConfiguration;
