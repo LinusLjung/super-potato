@@ -1,9 +1,4 @@
-import {
-  getAuthEndpointUrl,
-  getTokenEndpointBody,
-  getTokenEndpointUrl,
-  validateJWT,
-} from '@linusljung/google-auth/dist';
+import { getAuthEndpointUrl, getTokenEndpointBody, getTokenEndpointUrl, validateJWT } from '@linusljung/google-auth';
 import superSession from '@linusljung/super-session';
 import csurf from 'csurf';
 import express from 'express';

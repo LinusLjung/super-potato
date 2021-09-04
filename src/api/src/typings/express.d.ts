@@ -1,4 +1,4 @@
-import { AuthDataType } from '@linusljung/google-auth/dist/validate-jwt';
+import { AuthDataType } from '@linusljung/google-auth/validate-jwt';
 
 declare global {
   namespace Express {
