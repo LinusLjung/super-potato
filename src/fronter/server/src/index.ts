@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
 import path from 'path';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST, PORT, SESSION_HOST, SESSION_SECRET } from './consts';
 import { getOrCreate } from './database/user';
-import validateCsrfSecret from './middlewares/validateCsrfSecret';
+import validateCsrfSecret from './middlewares/validate-csrf-secret';
 import { AUTH_GOOGLE, ROOT, SIGN_IN } from './routes';
 
 const SRC_FOLDER = path.join('./src');
