@@ -19,7 +19,7 @@ function fetchChannel(id: string): Promise<Channel> {
   const apiUrl = getApiUrl(endpoint.name);
   const url = new URL(apiUrl);
 
-  url.searchParams.set(endpoint.params.channelId, id);
+  url.searchParams.set(endpoint.searchParams.channelId, id);
 
   return fetch(url.toString()).then((response) => response.json());
 }

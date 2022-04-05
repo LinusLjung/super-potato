@@ -1,1 +1,6 @@
-export { default } from '../jest.config.base';
+import base from '../../jest.config.base';
+
+export default {
+  ...base,
+  rootDir: __dirname,
+};
