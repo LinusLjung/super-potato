@@ -16,9 +16,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linusljung/google-auth": "^1.0.0",
-    "@linusljung/super-session": "^1.0.0",
-    "@linusljung/use-db": "^1.2.0",
+    "@linusljung/google-auth": "^2.0.0",
+    "@linusljung/super-session": "^2.0.0",
+    "@linusljung/use-db": "^2.0.0",
     "csurf": "^1.11.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
