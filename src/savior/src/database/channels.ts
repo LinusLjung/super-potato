@@ -28,7 +28,7 @@ function getLatestVideo(db: Db, channel: YoutuberChannel): Promise<Video> {
       ])
       .next((err, doc) => {
         if (err) {
-          reject(err);
+          return void reject(err);
         }
 
         resolve(doc?.video);
