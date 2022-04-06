@@ -1,7 +1,7 @@
-import { COLLECTION_NAMES, Db, UpdateWriteOpResult, Video } from '@linusljung/use-db';
+import { Collection, COLLECTION_NAMES, Db, UpdateWriteOpResult, Video } from '@linusljung/use-db';
 import YoutuberChannel, { Entry } from '../../../shared/youtuber/data-types/Channel.type';
 
-function getCollection(db: Db) {
+function getCollection(db: Db): Collection {
   return db.collection(COLLECTION_NAMES.channels);
 }
 
