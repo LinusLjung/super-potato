@@ -41,6 +41,6 @@ function validateJWT(token: string, clientId: string) {
   });
 }
 
-export { AuthDataType };
+export { getJWKSet, AuthDataType };
 
 export default validateJWT;

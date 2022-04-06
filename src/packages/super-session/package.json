@@ -1,11 +1,11 @@
 {
   "name": "@linusljung/super-session",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "author": "Linus Ljung <linus.ljung@outlook.com>",
   "license": "ISC",
   "repository": "git://github.com/LinusLjung/super-potato.git",
-  "main": "index.js",
+  "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc"

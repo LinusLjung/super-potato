@@ -4,14 +4,13 @@ import Endpoints from '../../../shared/youtuber/constants/Endpoints';
 import Channel from '../../../shared/youtuber/data-types/Channel.type';
 import { saveChannel } from '../database/channels';
 import { getDistinctSupscriptionIDs } from '../database/users';
-
-const API_PROTOCOL = 'http';
-const API_HOST = process.env.API_HOST || 'localhost';
-const API_PORT = process.env.API_PORT || 3000;
-const DB_HOST = process.env.DB_HOST || 'localhost';
-const DB_NAME = process.env.DB_NAME || 'super-potato';
+import { API_HOST, API_PORT, API_PROTOCOL, DB_HOST, DB_NAME } from './consts';
 
 function getApiUrl(endpoint: string) {
+  if (!endpoint) {
+    throw new Error(`Invalid endpoint: ${endpoint}`);
+  }
+
   return `${API_PROTOCOL}://${API_HOST}:${API_PORT}/${endpoint}`;
 }
 
@@ -20,7 +19,7 @@ function fetchChannel(id: string): Promise<Channel> {
   const apiUrl = getApiUrl(endpoint.name);
   const url = new URL(apiUrl);
 
-  url.searchParams.set(endpoint.params.channelId, id);
+  url.searchParams.set(endpoint.searchParams.channelId, id);
 
   return fetch(url.toString()).then((response) => response.json());
 }
@@ -52,5 +51,7 @@ function updateChannels(): Promise<void> {
     resolve();
   });
 }
+
+export { getApiUrl, fetchChannel };
 
 export default updateChannels;

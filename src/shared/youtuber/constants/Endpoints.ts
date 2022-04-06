@@ -2,7 +2,7 @@ const CHANNEL_KEY = 'channel_id';
 
 type Channel = {
   name: 'channel';
-  params: {
+  searchParams: {
     channelId: typeof CHANNEL_KEY;
   };
 };
@@ -10,7 +10,7 @@ type Channel = {
 class Endpoints {
   static channel: Channel = {
     name: 'channel',
-    params: {
+    searchParams: {
       channelId: 'channel_id',
     },
   };

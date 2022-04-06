@@ -1,11 +1,13 @@
 {
   "name": "@linusljung/google-auth",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "repository": "git://github.com/LinusLjung/super-potato.git",
   "typings": "./dist",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "rimraf ./dist && tsc"
   },
   "author": "",
@@ -15,6 +17,7 @@
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
+    "@types/node": "^17.0.23",
     "@types/node-fetch": "^2.5.10",
     "@types/node-jose": "^1.1.6",
     "rimraf": "^3.0.2",

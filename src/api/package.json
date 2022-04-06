@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
     "build": "rimraf ./build && tsc",
     "build:watch": "rimraf ./build && tsc --watch",
     "start": "PORT=3002 node -r dotenv/config ./build dotenv_config_path=../../.env",

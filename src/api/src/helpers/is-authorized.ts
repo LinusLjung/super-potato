@@ -1,5 +1,4 @@
-import { validateJWT } from '@linusljung/google-auth/dist';
-import { AuthDataType } from '@linusljung/google-auth/dist/validate-jwt';
+import { AuthDataType, validateJWT } from '@linusljung/google-auth';
 import { Request } from 'express';
 import { GOOGLE_CLIENT_ID } from '../consts';
 
