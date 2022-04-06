@@ -1,14 +1,14 @@
 {
   "name": "@linusljung/google-auth",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "",
   "repository": "git://github.com/LinusLjung/super-potato.git",
   "typings": "./dist",
-  "main": "index.js",
+  "main": "./dist",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "build": "rimraf ./dist && tsc"
+    "build": "rimraf ./dist && tsc -p ./tsconfig.build.json"
   },
   "author": "",
   "license": "ISC",
