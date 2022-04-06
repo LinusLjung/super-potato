@@ -1,0 +1,4 @@
+{
+  "packages": ["src/api", "src/fronter/server", "src/savior", "src/youtuber", "src/packages/*"],
+  "version": "independent"
+}
