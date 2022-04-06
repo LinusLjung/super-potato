@@ -4,7 +4,7 @@ import * as Fetch from 'node-fetch';
 
 const fetchSpy = jest.spyOn(Fetch, 'default');
 
-describe('update-channel', () => {
+describe('update-channels', () => {
   describe('getApiUrl()', () => {
     it('should return a URL based on env variables', () => {
       const endpoint = 'endpoint';
