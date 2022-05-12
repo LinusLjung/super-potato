@@ -4,8 +4,18 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "postinstall": "ts-node tools/postinstall"
   },
+  "workspaces": [
+    "src/packages/google-auth",
+    "src/api",
+    "src/fronter/server",
+    "src/savior",
+    "src/youtuber",
+    "src/packages/super-session",
+    "src/packages/use-db"
+  ],
   "author": "",
   "license": "ISC",
   "description": "",
