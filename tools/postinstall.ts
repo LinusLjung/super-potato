@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import { workspaces } from '../package.json';
+import workspaces from '../workspaces.json';
 
 workspaces.forEach((workspace) => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires

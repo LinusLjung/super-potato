@@ -1,0 +1,9 @@
+[
+  "src/packages/google-auth",
+  "src/api",
+  "src/fronter/server",
+  "src/savior",
+  "src/youtuber",
+  "src/packages/super-session",
+  "src/packages/use-db"
+]
