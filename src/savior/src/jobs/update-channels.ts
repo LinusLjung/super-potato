@@ -1,4 +1,4 @@
-import { Db, useDb } from '@linusljung/use-db';
+import { useDb } from '@linusljung/use-db';
 import fetch from 'node-fetch';
 import Endpoints from '../../../shared/youtuber/constants/Endpoints';
 import Channel from '../../../shared/youtuber/data-types/Channel.type';
@@ -33,12 +33,14 @@ function updateChannels(): Promise<void> {
             return dbReject(error);
           }
 
-          db = db!;
+          if (!db) {
+            return dbReject(new Error('Unexpected error: Missing db instance'));
+          }
 
           getDistinctSupscriptionIDs(db)
             .then((subscriptionIDs) => {
               return Promise.all(
-                subscriptionIDs.map((id) => fetchChannel(id).then((channel) => saveChannel({ db: db as Db, channel }))),
+                subscriptionIDs.map((id) => fetchChannel(id).then((channel) => saveChannel({ db, channel }))),
               );
             })
             .then(() => dbResolve());
