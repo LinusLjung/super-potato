@@ -1,0 +1,13 @@
+{
+  "types": {
+    "service": {
+      "rootDir": "src",
+      "variables": [
+        "port"
+      ]
+    },
+    "package": {
+      "rootDir": "src/packages"
+    }
+  }
+}
