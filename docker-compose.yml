@@ -22,8 +22,6 @@ services:
     build:
       context: ./
       dockerfile: ./src/fronter/server/Dockerfile
-      args:
-        SUPER_POTATO_PACKAGE_TOKEN: ${SUPER_POTATO_PACKAGE_TOKEN}
     environment:
       - SESSION_HOST=session
       - DB_HOST=db
@@ -46,8 +44,6 @@ services:
     build:
       context: ./
       dockerfile: ./src/api/Dockerfile
-      args:
-        SUPER_POTATO_PACKAGE_TOKEN: ${SUPER_POTATO_PACKAGE_TOKEN}
     environment:
       - SESSION_HOST=session
       - DB_HOST=db

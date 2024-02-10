@@ -10,7 +10,7 @@
     "build:watch": "rimraf ./build && tsc --watch",
     "start": "PORT=3002 node -r dotenv/config ./build dotenv_config_path=../../.env",
     "validate-docs": "node ./tools/validate-docs.js",
-    "docker:build": "docker build --build-arg SUPER_POTATO_PACKAGE_TOKEN=${SUPER_POTATO_PACKAGE_TOKEN} -t linusljung/api -f ./Dockerfile ../..",
+    "docker:build": "docker build -t linusljung/api -f ./Dockerfile ../..",
     "docker:bash": "docker run -it --entrypoint=/bin/bash linusljung/api"
   },
   "author": "",
