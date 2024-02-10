@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env ./node_modules/.bin/ts-node
 import { exec } from 'child_process';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
