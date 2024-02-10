@@ -11,6 +11,7 @@ COPY ./tsconfig.json ${PROJECT_DIR}/tsconfig.json
 COPY ./src/fronter/server ${PROJECT_DIR}/src/fronter/server
 COPY ./.github-token.txt ${PROJECT_DIR}/.github-token.txt
 COPY ./tools/copy-gh-pat.js ${PROJECT_DIR}/tools/copy-gh-pat.js
+COPY ./ssl ${PROJECT_DIR}/ssl
 
 WORKDIR ${PROJECT_DIR}/src/fronter/server
 

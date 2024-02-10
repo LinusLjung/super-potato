@@ -9,10 +9,18 @@ import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST, PORT, SESSION_HOST, SESSI
 import { getOrCreate } from './database/user';
 import validateCsrfSecret from './middlewares/validate-csrf-secret';
 import { AUTH_GOOGLE, ROOT, SIGN_IN } from './routes';
+import fs from 'fs';
+import https from 'https';
 
+const ROOT_FOLDER = path.join(__dirname, '../../../../');
 const SRC_FOLDER = path.join('./src');
 
+const sslCert = fs.readFileSync(path.join(ROOT_FOLDER, 'ssl/localhost.crt'));
+const sslKey = fs.readFileSync(path.join(ROOT_FOLDER, 'ssl/localhost.key'));
+
 const app = express();
+
+const httpsServer = https.createServer({ key: sslKey, cert: sslCert }, app);
 
 app.set('view engine', 'pug');
 app.set('views', SRC_FOLDER);
@@ -87,6 +95,6 @@ app.get(AUTH_GOOGLE, validateCsrfSecret, (req, res) => {
   });
 });
 
-app.listen(PORT);
+httpsServer.listen(PORT);
 
 console.log(`Listening on port ${PORT}`);
