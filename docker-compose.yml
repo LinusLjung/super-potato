@@ -17,7 +17,7 @@ services:
     networks:
       - main
     volumes:
-      - /data/super-potato/db:/data/db
+      - /var/lib/docker/volumes/super-potato-db/_data:/data/db
   fronter-server:
     build:
       context: ./
