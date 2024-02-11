@@ -11,11 +11,11 @@
     "build": "rimraf ./dist && tsc"
   },
   "devDependencies": {
+    "@types/mongodb": "^3.6.15",
     "rimraf": "^3.0.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@types/mongodb": "^3.6.15",
     "mongodb": "^3.6.10"
   }
 }
