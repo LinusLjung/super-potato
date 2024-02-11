@@ -1,17 +1,13 @@
-import path from 'path';
-import { InitialOptionsTsJest } from 'ts-jest';
+import { JestConfigWithTsJest } from 'ts-jest';
 import rootConfig from './jest.config';
 
-const { collectCoverage, coverageDirectory, coveragePathIgnorePatterns, coverageProvider } = rootConfig;
+const { coverageDirectory, coveragePathIgnorePatterns } = rootConfig;
 
-const config: InitialOptionsTsJest = {
+const config: JestConfigWithTsJest = {
   clearMocks: true,
-  collectCoverage,
   coverageDirectory,
   coveragePathIgnorePatterns,
-  coverageProvider,
   preset: 'ts-jest',
-  resolver: path.resolve(__dirname, './jest/resolver.js'),
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/build/', '/dist/'],
 };

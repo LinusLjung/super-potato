@@ -1,6 +1,5 @@
 import { createRemoteJWKSet } from 'jose/jwks/remote';
-import { jwtVerify } from 'jose/jwt/verify';
-import { JWTVerifyResult } from 'jose/webcrypto/types';
+import { JWTVerifyResult, jwtVerify } from 'jose/jwt/verify';
 import getOpenIDConfiguration from './get-openid-configuration';
 
 let JWKSet: ReturnType<typeof createRemoteJWKSet>;
@@ -20,24 +19,22 @@ type AuthDataType = {
   result: JWTVerifyResult | null;
 };
 
-function validateJWT(token: string, clientId: string) {
+function validateJWT(token: string, clientId: string): Promise<AuthDataType> {
   return getJWKSet().then((JWKSet) => {
-    return new Promise<AuthDataType>((resolve) => {
-      resolve(
-        jwtVerify(token, JWKSet, {
-          issuer: ['https://accounts.google.com', 'accounts.google.com'],
-          audience: clientId,
-        })
-          .then((result) => ({
-            result,
-            isAuthorized: true,
-          }))
-          .catch(() => ({
-            result: null,
-            isAuthorized: false,
-          })),
-      );
-    });
+    return Promise.resolve(
+      jwtVerify(token, JWKSet, {
+        issuer: ['https://accounts.google.com', 'accounts.google.com'],
+        audience: clientId,
+      })
+        .then((result) => ({
+          result,
+          isAuthorized: true,
+        }))
+        .catch(() => ({
+          result: null,
+          isAuthorized: false,
+        })),
+    );
   });
 }
 

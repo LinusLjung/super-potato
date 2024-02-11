@@ -1,5 +1,6 @@
-import { InitialOptionsTsJest } from 'ts-jest';
-const config: InitialOptionsTsJest = {
+import { JestConfigWithTsJest } from 'ts-jest';
+
+const config: JestConfigWithTsJest = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   collectCoverageFrom: ['**/src/**/*.ts', '**/src/**/*.tsx'],
