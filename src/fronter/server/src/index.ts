@@ -1,16 +1,17 @@
-import { getAuthEndpointUrl, getTokenEndpointBody, getTokenEndpointUrl, validateJWT } from '@linusljung/google-auth';
+import { validateJWT } from '@linusljung/google-auth';
 import superSession from '@linusljung/super-session';
-import csurf from 'csurf';
+import assert from 'assert';
+import cookieParser from 'cookie-parser';
+import crypto from 'crypto';
+import { doubleCsrf } from 'csrf-csrf';
 import express from 'express';
-import { StatusCodes } from 'http-status-codes';
-import fetch from 'node-fetch';
-import path from 'path';
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, HOST, PORT, SESSION_HOST, SESSION_SECRET } from './consts';
-import { getOrCreate } from './database/user';
-import validateCsrfSecret from './middlewares/validate-csrf-secret';
-import { AUTH_GOOGLE, ROOT, SIGN_IN } from './routes';
 import fs from 'fs';
+import { StatusCodes } from 'http-status-codes';
 import https from 'https';
+import path from 'path';
+import { GOOGLE_CLIENT_ID, PORT, SESSION_HOST, SESSION_SECRET } from './consts';
+import { getOrCreate } from './database/user';
+import { AUTH_GOOGLE, ROOT } from './routes';
 
 const ROOT_FOLDER = path.join(__dirname, '../../../../');
 const SRC_FOLDER = path.join('./src');
@@ -25,14 +26,37 @@ const httpsServer = https.createServer({ key: sslKey, cert: sslCert }, app);
 app.set('view engine', 'pug');
 app.set('views', SRC_FOLDER);
 
-app.use(superSession(SESSION_HOST!, SESSION_SECRET!)());
+const CSRF_SECRET = crypto.randomBytes(8).toString('hex');
+const COOKIES_SECRET = crypto.randomBytes(8).toString('hex');
+const CSRF_COOKIE_NAME = 'X-CSRF-Token';
 
-app.use(csurf());
+const { generateToken, doubleCsrfProtection } = doubleCsrf({
+  getSecret: () => CSRF_SECRET,
+  cookieName: CSRF_COOKIE_NAME,
+  cookieOptions: {
+    sameSite: 'strict',
+    secure: true,
+  },
+  size: 64,
+  getTokenFromRequest: (req) => req.session.csrfSecret?.split('|')[0],
+});
+
+assert(SESSION_HOST);
+assert(SESSION_SECRET);
+
+app.use(cookieParser(COOKIES_SECRET));
+app.use(superSession(SESSION_HOST, SESSION_SECRET)());
+app.use(doubleCsrfProtection);
+app.use(express.json());
 
 app.get(ROOT, (req, res) => {
+  req.session.csrfSecret = generateToken(req, res, false, false);
+
   new Promise<boolean>((resolve) => {
     if (req.session.auth) {
-      return validateJWT(req.session.auth.id_token, GOOGLE_CLIENT_ID!).then(({ isAuthorized }) =>
+      assert(GOOGLE_CLIENT_ID);
+
+      return void validateJWT(req.session.auth.id_token, GOOGLE_CLIENT_ID).then(({ isAuthorized }) =>
         resolve(isAuthorized),
       );
     }
@@ -41,58 +65,36 @@ app.get(ROOT, (req, res) => {
   }).then((isAuthorized) =>
     res.render('layout.pug', {
       isSignedIn: isAuthorized,
-      auth: JSON.stringify(req.session.auth || {}),
+      auth: JSON.stringify(req.session.auth ?? {}),
+      googleClientId: GOOGLE_CLIENT_ID,
     }),
   );
 });
 
-app.get(SIGN_IN, (req, res) => {
-  if (!req.session.csrfSecret) {
-    res.status(StatusCodes.FORBIDDEN).send('Missing CSRF secret');
-  }
+app.post(AUTH_GOOGLE, (req, res) => {
+  assert(GOOGLE_CLIENT_ID);
 
-  getAuthEndpointUrl(req.session.csrfSecret!, GOOGLE_CLIENT_ID!, `${HOST}:${PORT}${AUTH_GOOGLE}`).then((url) => {
-    res.redirect(StatusCodes.MOVED_TEMPORARILY, url);
-  });
-});
+  validateJWT(req.body.id_token, GOOGLE_CLIENT_ID)
+    .then(({ result }) => {
+      if (!result) {
+        throw new Error('Validation of JWT failed');
+      }
 
-app.get(AUTH_GOOGLE, validateCsrfSecret, (req, res) => {
-  getTokenEndpointUrl().then((url) => {
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(
-        getTokenEndpointBody(
-          req.query.code as string,
-          GOOGLE_CLIENT_ID!,
-          GOOGLE_CLIENT_SECRET!,
-          `${HOST}:${PORT}${AUTH_GOOGLE}`,
-        ),
-      ),
+      if (!result.payload.email_verified as boolean) {
+        throw new Error('Email is not verified');
+      }
+
+      return getOrCreate(result.payload.sub, result.payload.email as string);
     })
-      .then((response) => response.json())
-      .then((response) => {
-        return validateJWT(response.id_token, GOOGLE_CLIENT_ID!)
-          .then(({ result }) => {
-            if (!result) {
-              throw new Error('Validation of JWT failed');
-            }
+    .then(() => {
+      req.session.auth = req.body;
 
-            if (!result.payload.email_verified as boolean) {
-              throw new Error('Email is not verified');
-            }
-
-            return getOrCreate(result.payload.sub!, result.payload.email as string);
-          })
-          .then(() => response);
-      })
-      .then((response) => {
-        req.session.auth = response;
-        res.redirect(StatusCodes.MOVED_TEMPORARILY, ROOT);
-      })
-      .catch(() => {
-        // TODO: 500
-      });
-  });
+      res.status(StatusCodes.OK).send();
+    })
+    .catch(() => {
+      // TODO: 500
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).send();
+    });
 });
 
 httpsServer.listen(PORT);

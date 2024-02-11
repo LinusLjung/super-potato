@@ -2,6 +2,7 @@ doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
+    meta(name="google-signin-client_id" content=googleClientId)
     title= title
   body
     if isSignedIn
@@ -9,7 +10,25 @@ html(lang='en')
     else
       p Signed out
 
-    p
-      a.sign-in-anchor(href='/sign-in') Sign in
+    div(class="g-signin2" data-onsuccess="onSignIn")
+      Sign in
 
     p= auth
+
+    script(src="https://apis.google.com/js/platform.js" async defer)
+
+    script.
+      (() => {
+        const headers = new Headers();
+
+        headers.set('Content-Type', 'application/json');
+
+        window.onSignIn = (response) => {
+          fetch('/auth/google', {
+            method: 'POST',
+            body: JSON.stringify(response.getAuthResponse()),
+            credentials: 'same-origin',
+            headers,
+          });
+        }
+      })();
