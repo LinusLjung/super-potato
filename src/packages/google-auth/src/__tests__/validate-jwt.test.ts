@@ -1,10 +1,9 @@
 import { getJWKSet } from '../validate-jwt';
-import * as Fetch from 'node-fetch';
 
-const fetchSpy = jest.spyOn(Fetch, 'default');
+const fetchSpy = jest.spyOn(global, 'fetch');
 
 describe('validate-jwt', () => {
-  let cachedJWKSet: Function;
+  let cachedJWKSet: Awaited<ReturnType<typeof getJWKSet>>;
 
   describe('getJWKSet()', () => {
     it('resolves a function', async () => {

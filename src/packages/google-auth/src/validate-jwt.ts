@@ -4,13 +4,15 @@ import getOpenIDConfiguration from './get-openid-configuration';
 
 let JWKSet: ReturnType<typeof createRemoteJWKSet>;
 
-function getJWKSet() {
+function getJWKSet(): Promise<ReturnType<typeof createRemoteJWKSet>> {
   if (JWKSet) {
     return Promise.resolve(JWKSet);
   }
 
   return getOpenIDConfiguration().then((config) => {
-    return (JWKSet = createRemoteJWKSet(new URL(config.jwks_uri)));
+    JWKSet = createRemoteJWKSet(new URL(config.jwks_uri));
+
+    return JWKSet;
   });
 }
 

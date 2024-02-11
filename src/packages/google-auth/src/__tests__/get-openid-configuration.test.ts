@@ -1,8 +1,7 @@
 import getOpenIDConfiguration from '../get-openid-configuration';
-import * as Fetch from 'node-fetch';
 import openidConfiguration from '../../jest/openid-configuration.json';
 
-const fetchSpy = jest.spyOn(Fetch, 'default');
+const fetchSpy = jest.spyOn(global, 'fetch');
 
 describe('get-openid-configuration', () => {
   let cachedConfiguration: Partial<typeof openidConfiguration>;

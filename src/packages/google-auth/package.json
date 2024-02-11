@@ -1,10 +1,16 @@
 {
   "name": "@linusljung/google-auth",
-  "version": "1.1.2",
+  "version": "3.0.0",
   "description": "",
-  "repository": "git://github.com/LinusLjung/super-potato.git",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/LinusLjung/super-potato.git"
+  },
   "typings": "./dist",
   "main": "./dist",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
@@ -13,13 +19,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "jose": "^3.20.4",
-    "node-fetch": "^2.6.7"
+    "jose": "^3.20.4"
   },
   "devDependencies": {
-    "@types/node": "^17.0.23",
-    "@types/node-fetch": "^2.5.10",
-    "@types/node-jose": "^1.1.6",
     "rimraf": "^3.0.2",
     "typescript": "^5.3.3"
   }

@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 let _config: Config;
 
 type Config = {

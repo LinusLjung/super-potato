@@ -22,7 +22,7 @@ function buildUrl(
   return url;
 }
 
-function getAuthEndpointUrl(csrfSecret: string, clientId: string, redirectUri: string) {
+function getAuthEndpointUrl(csrfSecret: string, clientId: string, redirectUri: string): Promise<string> {
   return getOpenidConfiguration().then((config) => {
     return buildUrl(
       config.authorization_endpoint,
