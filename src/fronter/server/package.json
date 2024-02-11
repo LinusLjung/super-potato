@@ -17,8 +17,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@linusljung/google-auth": "^1.0.0",
-    "@linusljung/super-session": "^1.0.0",
+    "@linusljung/google-auth": "^3.0.0",
+    "@linusljung/super-session": "^1.2.1",
     "@linusljung/use-db": "^1.2.0",
     "cookie-parser": "^1.4.6",
     "csrf-csrf": "^3.0.3",

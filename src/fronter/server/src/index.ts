@@ -84,6 +84,8 @@ app.post(AUTH_GOOGLE, (req, res) => {
         throw new Error('Email is not verified');
       }
 
+      assert(result.payload.sub);
+
       return getOrCreate(result.payload.sub, result.payload.email as string);
     })
     .then(() => {
