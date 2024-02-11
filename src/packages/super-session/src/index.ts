@@ -1,7 +1,7 @@
 import connectRedis from 'connect-redis';
 import session from 'express-session';
 import redis from 'redis';
-import '../typings/express-session';
+import './typings/express-session';
 
 function superSession(host: string, secret: string): () => ReturnType<typeof session> {
   const RedisStore = connectRedis(session);
