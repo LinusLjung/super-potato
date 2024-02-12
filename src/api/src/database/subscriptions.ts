@@ -1,7 +1,8 @@
 import { COLLECTION_NAMES, useDb, User } from '@linusljung/use-db';
+import assert from 'assert';
 import { DB_HOST, DB_NAME } from '../consts';
 
-export function getSubscriptions(id: string) {
+export function getSubscriptions(id: string): Promise<User['subscriptions']> {
   return new Promise((resolve, reject) => {
     useDb(DB_HOST, DB_NAME, (error, db) => {
       return new Promise((dbResolve) => {
@@ -9,13 +10,14 @@ export function getSubscriptions(id: string) {
           throw error;
         }
 
-        db!
-          .collection<User>(COLLECTION_NAMES.users)
+        assert(db);
+
+        db.collection<User>(COLLECTION_NAMES.users)
           .findOne({
             id,
           })
           .then((user) => {
-            resolve(user?.subscriptions);
+            resolve(user?.subscriptions ?? []);
             dbResolve();
           })
           .catch(() => reject());
@@ -24,16 +26,17 @@ export function getSubscriptions(id: string) {
   });
 }
 
-export function addSubscription(id: string, subscription: string) {
-  return new Promise<void>((resolve, reject) => {
+export function addSubscription(id: string, subscription: string): Promise<void> {
+  return new Promise((resolve, reject) => {
     useDb(DB_HOST, DB_NAME, (error, db) => {
       return new Promise((dbResolve) => {
         if (error) {
           throw error;
         }
 
-        db!
-          .collection<User>(COLLECTION_NAMES.users)
+        assert(db);
+
+        db.collection<User>(COLLECTION_NAMES.users)
           .updateOne(
             { id },
             {
@@ -50,16 +53,17 @@ export function addSubscription(id: string, subscription: string) {
   });
 }
 
-export function deleteSubscription(userId: string, subscriptionId: string) {
-  return new Promise<void>((resolve, reject) => {
+export function deleteSubscription(userId: string, subscriptionId: string): Promise<void> {
+  return new Promise((resolve, reject) => {
     useDb(DB_HOST, DB_NAME, (error, db) => {
       return new Promise((dbResolve) => {
         if (error) {
           throw error;
         }
 
-        db!
-          .collection<User>(COLLECTION_NAMES.users)
+        assert(db);
+
+        db.collection<User>(COLLECTION_NAMES.users)
           .updateOne(
             { id: userId },
             {
