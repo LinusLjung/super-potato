@@ -12,6 +12,7 @@ import path from 'path';
 import { GOOGLE_CLIENT_ID, PORT, SESSION_HOST, SESSION_SECRET } from './consts';
 import { getOrCreate } from './database/user';
 import { AUTH_GOOGLE, ROOT } from './routes';
+import { User } from '@linusljung/use-db';
 
 const ROOT_FOLDER = path.join(__dirname, '../../../../');
 const SRC_FOLDER = path.join('./src');
@@ -62,13 +63,37 @@ app.get(ROOT, (req, res) => {
     }
 
     resolve(false);
-  }).then((isAuthorized) =>
-    res.render('layout.pug', {
-      isSignedIn: isAuthorized,
-      auth: JSON.stringify(req.session.auth ?? {}),
-      googleClientId: GOOGLE_CLIENT_ID,
-    }),
-  );
+  })
+    .then<{
+      isAuthorized: boolean;
+      response: User['subscriptions'] | null;
+    }>((isAuthorized) => {
+      if (!isAuthorized) {
+        return { isAuthorized, response: null };
+      }
+
+      const headers = new Headers({
+        Cookie: req.headers.cookie ?? '',
+      });
+
+      return fetch('http://api:3002/subscriptions', {
+        headers,
+      })
+        .then((res) => res.json() as Promise<User['subscriptions']>)
+        .catch(console.error)
+        .then((response) => ({ isAuthorized, response })) as Promise<{
+        isAuthorized: boolean;
+        response: User['subscriptions'];
+      }>;
+    })
+    .then<void>(({ isAuthorized, response }) =>
+      res.render('layout.pug', {
+        isSignedIn: isAuthorized,
+        auth: JSON.stringify(req.session.auth ?? {}),
+        googleClientId: GOOGLE_CLIENT_ID,
+        subscriptions: response ?? [],
+      }),
+    );
 });
 
 app.post(AUTH_GOOGLE, (req, res) => {

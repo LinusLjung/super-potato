@@ -15,6 +15,12 @@ html(lang='en')
 
     p= auth
 
+    if subscriptions.length
+      each subscription in subscriptions
+        p= subscription.id
+    else
+      p No subscriptions
+
     script(src="https://apis.google.com/js/platform.js" async defer)
 
     script.
